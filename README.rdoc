@@ -13,3 +13,17 @@ Each save will ensure that it only saves if the database contains the record wit
      include MongoMapper::Doument
      versioned_update
    end
+
+== Updating Modifiers
+
+This plugin will update the internal value of a model when using modifiers like <code>model.set</code>, <code>model.increment</code>, <code>model.decrement</code>, <code>model.push</code>, <code>model.pull</code> and <code>model.push_uniq</code>
+
+====Usage
+
+   #in initializer
+   MongoMapper::Document.append_inclusions MongoMapper::Plugins::UpdatingModifiers::Addition
+
+   #Use your model as usual
+   counter => Counter.create(:count => 1)
+   counter.increment(:count, 1)
+   counter.count #=> 2
