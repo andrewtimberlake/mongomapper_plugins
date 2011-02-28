@@ -27,3 +27,19 @@ This plugin will update the internal value of a model when using modifiers like 
    counter => Counter.create(:count => 1)
    counter.increment(:count, 1)
    counter.count #=> 2
+
+== Auto increment ids
+
+This plugin will allow the auto generation of numeric ids
+Uses the "Insert if Not Present" technique (see Mongo documentation[http://www.mongodb.org/display/DOCS/Atomic+Operations#AtomicOperations-%22InsertifNotPresent%22])
+
+====Usage
+
+   class Model
+     include MongoMapper::Document
+     auto_increment_id
+   end
+
+   #Assuming the first document in the collection
+   Model.create.id #=> 1
+   Model.create.id #=> 2 etc
