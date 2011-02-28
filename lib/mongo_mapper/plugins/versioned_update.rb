@@ -1,19 +1,14 @@
 module MongoMapper
   module Plugins
     module VersionedUpdate
-      def self.configure(mod)
-        mod.class_eval {
-          key :_version, Integer, :default => 1
-        }
-      end
-
       module ClassMethods
         def versioned_update
-          plugin MongoMapper::Plugins::VersionedUpdate
+          include MongoMapper::Plugins::VersionedUpdate::OverriddenMethods
+          key :_version, Integer, :default => 1
         end
       end
 
-      module InstanceMethods
+      module OverriddenMethods
         private
           def update(options={})
             version = self._version
