@@ -10,9 +10,6 @@ end
 require 'rake/rdoctask'
 require 'rake/testtask'
 
-$LOAD_PATH.unshift('lib')
-require 'css'
-
 desc 'Run code coverage'
 task :coverage do |t|
   puts `rcov -T #{Dir.glob('spec/**/*_spec.rb').join(' ')}`
