@@ -2,9 +2,9 @@
 
 == Versioned Update
 
-This plugin implements the "Update if Current" http://www.mongodb.org/display/DOCS/Atomic+Operations#AtomicOperations-%22UpdateifCurrent%22 Atomic operation.
+This plugin implements the "Update if Current" (see Mongo documentation[http://www.mongodb.org/display/DOCS/Atomic+Operations#AtomicOperations-%22UpdateifCurrent%22]) Atomic operation.
 
-The plugin will add a _version key to your model and increment it on each save.
+The plugin will add a <code>_version</code> key to your model and increment it on each save.
 Each save will ensure that it only saves if the database contains the record with the same version at the time of save and raises an InvalidVersion error if the versions do not match.
 
 ====Usage
