@@ -5,7 +5,7 @@ module MongoMapper
         def auto_increment_id
           key :_id, Integer
 
-          after_create :generate_document_id
+          before_create :generate_document_id
         end
       end
 
