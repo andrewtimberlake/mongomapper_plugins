@@ -27,14 +27,8 @@ module MongoMapper
       end
 
       class InvalidVersion < StandardError; end
-
-      module Addition
-        def self.included(model)
-          model.plugin VersionedUpdate
-        end
-      end
     end
   end
 end
 
-MongoMapper::Document.append_inclusions MongoMapper::Plugins::VersionedUpdate::Addition
+MongoMapper::Document.plugin MongoMapper::Plugins::VersionedUpdate
