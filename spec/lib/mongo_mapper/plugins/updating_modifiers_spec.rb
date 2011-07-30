@@ -15,7 +15,7 @@ class Person
   key :friends, Array, :type_cast => BSON::ObjectId
 end
 
-MongoMapper::Document.append_inclusions MongoMapper::Plugins::UpdatingModifiers::Addition
+MongoMapper::Document.plugin MongoMapper::Plugins::UpdatingModifiers
 
 module MongoMapper
   module Plugins

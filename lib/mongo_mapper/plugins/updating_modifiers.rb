@@ -1,6 +1,8 @@
 module MongoMapper
   module Plugins
     module UpdatingModifiers
+      extend ActiveSupport::Concern
+
       def self.configure(mod)
       end
 
@@ -10,7 +12,7 @@ module MongoMapper
             obj, method = get_obj_and_method(key)
             obj.send("#{method}=", value)
           end
-          super
+          super hash_to_mongo(hash)
         end
 
         def increment(hash)
@@ -19,7 +21,7 @@ module MongoMapper
             val = obj.send(method)
             obj.send("#{method}=", val + value)
           end
-          super
+          super hash_to_mongo(hash)
         end
 
         def decrement(hash)
@@ -28,7 +30,7 @@ module MongoMapper
             val = obj.send(method)
             obj.send("#{method}=", val - value)
           end
-          super
+          super hash_to_mongo(hash)
         end
 
         def push(hash)
@@ -37,7 +39,7 @@ module MongoMapper
             obj = obj.send(method)
             obj.push value
           end
-          super
+          super hash_to_mongo(hash)
         end
 
         def pull(hash)
@@ -46,7 +48,7 @@ module MongoMapper
             obj = obj.send(method)
             obj.delete_if { |e| e == value }
           end
-          super
+          super hash_to_mongo(hash)
         end
 
         def add_to_set(hash)
@@ -55,7 +57,7 @@ module MongoMapper
             obj = obj.send(method)
             obj.push(value) unless obj.include?(value)
           end
-          super
+          super hash_to_mongo(hash)
         end
         alias push_uniq add_to_set
 
@@ -71,12 +73,18 @@ module MongoMapper
 
             [obj, method]
           end
-      end
 
-      module Addition
-        def self.included(model)
-          model.plugin UpdatingModifiers
-        end
+          def hash_to_mongo(arg)
+            if arg.is_a?(Hash)
+              keys = arg.keys
+              keys.each do |k|
+                arg[k] = hash_to_mongo(arg[k])
+              end
+              arg
+            else
+              arg && arg.respond_to?(:to_mongo) ? arg.to_mongo : arg
+            end
+          end
       end
     end
   end

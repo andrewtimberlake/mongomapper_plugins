@@ -1,6 +1,8 @@
 module MongoMapper
   module Plugins
     module VersionedUpdate
+      extend ActiveSupport::Concern
+
       module ClassMethods
         def versioned_update
           include MongoMapper::Plugins::VersionedUpdate::OverriddenMethods

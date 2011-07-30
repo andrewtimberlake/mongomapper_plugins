@@ -1,6 +1,8 @@
 module MongoMapper
   module Plugins
     module AutoIncrementId
+      extend ActiveSupport::Concern
+
       module ClassMethods
         def auto_increment_id
           key :_id, Integer
@@ -23,14 +25,8 @@ module MongoMapper
             end
           end
       end
-
-      module Addition
-        def self.included(model)
-          model.plugin AutoIncrementId
-        end
-      end
     end
   end
 end
 
-MongoMapper::Document.append_inclusions MongoMapper::Plugins::AutoIncrementId::Addition
+MongoMapper::Document.plugin MongoMapper::Plugins::AutoIncrementId
