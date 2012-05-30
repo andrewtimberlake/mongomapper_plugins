@@ -12,18 +12,24 @@ module MongoMapper
 
       module OverriddenMethods
         private
-          def update(options={})
-            version = self._version
+        # Overriding save_to_collection in lib/mongo_mapper/plugins/querying.rb
+        def save_to_collection(options={})
+          if persisted?
+            @_new = false
+            old_version = self._version
             self._version += 1
-            ret = collection.update({:_id => _id, :_version => version},
-                                    to_mongo,
-                                    :safe => true)
+            ret = collection.update({:_id => _id, :_version => old_version},
+                             to_mongo,
+                             :safe => true)
             if ret['n'] == 0
               self._version -= 1
               raise InvalidVersion
             end
             ret['err'].nil?
+          else
+            super
           end
+        end
       end
 
       class InvalidVersion < StandardError; end
