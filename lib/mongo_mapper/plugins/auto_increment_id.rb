@@ -16,7 +16,7 @@ module MongoMapper
           oldest_number = self.class.fields(:_id).sort([[:_id, :descending]]).first.try(:id)
           self.id = oldest_number.to_i + 1
           begin
-            break if collection.insert({:_id => id}, :safe => true)
+            break if collection.insert({:_id => id})
           rescue Mongo::OperationFailure => e
             #Ignored, trying to get the next key
           end

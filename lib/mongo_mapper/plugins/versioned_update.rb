@@ -18,9 +18,7 @@ module MongoMapper
             @_new = false
             old_version = self._version
             self._version += 1
-            ret = collection.update({:_id => _id, :_version => old_version},
-                             to_mongo,
-                             :safe => true)
+            ret = collection.update({:_id => _id, :_version => old_version}, to_mongo)
             if ret['n'] == 0
               self._version -= 1
               raise InvalidVersion

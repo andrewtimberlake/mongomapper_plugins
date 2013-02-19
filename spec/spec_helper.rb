@@ -7,7 +7,9 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
-    MongoMapper.database.collections.each { |col| col.remove }
+    MongoMapper.database.collections.each do |col|
+      col.remove unless col.name =~ /\Asystem\./
+    end
   end
 
   config.after(:all) do
